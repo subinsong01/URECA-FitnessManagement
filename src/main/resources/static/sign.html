@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/css/sign.css">
+</head>
+<body>
+    <div class="header">
+        <div class="title">유저하우스</div>
+        <a href="#" class="about">ABOUT</a>
+    </div>
+    <div class="container">
+        <div class="left-content">
+            <img src="/image/logo.png" alt="logo">
+        </div>
+        <div class="right-content">
+            <form id="signup_form" action="/signup" method="post">
+                <h2>회원가입</h2>
+                <label for="mid">아이디</label>
+                <input type="text" id="mid" name="mid" required> <br>
+                
+                <label for="mname">이름</label>
+                <input type="text" id="mname" name="mname" required> <br>
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required> <br>
+                
+                <label for="mpwd">Password</label>
+                <input type="password" id="mpwd" name="mpwd" required> <br>
+                
+                <button type="submit">회원가입</button>
+            </form>
+            <div>
+                <a href="/login.html" class="login-link">로그인하기</a>
+            </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    $("#signup_form").submit(function(){
+        $.ajax({
+            url: "/signup",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                mid: $("#mid").val(),
+                mname: $("#mname").val(),
+                mpwd: $("#mpwd").val(),
+                email: $("#email").val()
+            }),
+            success: function(data){
+                alert(data.code + "," + data.message);
+                if (data.code === "success") {
+                    alert("회원가입을 축하합니다");
+                    window.location.href = "/member.html";
+                }
+            }
+        });
+        
+        return false;
+    });
+</script>
+</body>
+</html>

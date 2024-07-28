@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인화면</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="header">
+        <div class="title">유저하우스</div>
+        <a href="#" class="about">ABOUT</a>
+    </div>
+    <div class="container">
+        <div class="left-content">
+            <img src="/image/logo.png" alt="logo">
+        </div>
+        <div class="right-content">
+            <form id="login_form" action="/member/login" method="post">
+                <h2>로그인</h2>
+                <label for="mid">Email</label>
+                <input type="text" id="mid" name="mid" required> <br>
+                
+                <label for="mpwd">Password</label>
+                <input type="password" id="mpwd" name="mpwd" required> <br>
+                
+                <button type="submit">로그인</button>
+            </form>
+            <p>아직 회원이 아니신가요?</p>
+            <a href="/sign.html" class="signup-button">회원가입</a>
+      <!--       <div>
+               <a href="#" id="check_login">로그인여부 확인</a>
+            </div> 
+            <div>
+                <a href="#" id="logout">로그아웃하기</a>
+            </div>-->
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    $("#login_form").submit(function(){
+        $.ajax({
+            url: "/member/login",
+            method: "POST",
+            data: $("#login_form").serialize(),
+            success: function(data){
+                alert(data.code + "," + data.message);
+                if (data.code === "success") {
+                    window.location.href = "/member.html";
+                }
+            }
+        });
+        
+        return false;
+    });
+    
+    // 로그인여부 확인
+ $("#check_login").click(function(){
+        $.ajax({
+            url: "/member/check_login",
+            success: function(data){
+                alert(data.code + "," + data.message);
+            }
+        });
+                
+        return false;
+    });
+
+    // 로그아웃하기
+    $("#logout").click(function(){
+        $.ajax({
+            url: "/member/logout",
+            success: function(data){
+                alert(data.code + "," + data.message);
+            }
+        });
+        
+        return false;
+    });
+</script>
+</body>
+</html>

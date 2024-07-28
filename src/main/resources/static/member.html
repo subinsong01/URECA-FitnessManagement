@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 등록</title>
+    <link rel="stylesheet" href="/css/member.css">
+</head>
+<body>
+    <div class="header">
+        <div class="title">유저하우스</div>
+        <a href="#" class="about">ABOUT</a>
+    </div>
+    <div class="container">
+        <div class="left-content">
+            <img src="/image/logo.png" alt="logo">
+        </div>
+        <div class="right-content">
+            <form id="register_form" action="/member/register" method="post">
+                <h2>회원 등록</h2>
+                <label for="member_name">이름</label>
+                <input type="text" id="member_name" name="member_name" required> <br>
+                
+                <label for="member_age">나이</label>
+                <input type="number" id="member_age" name="member_age" required> <br>
+                
+                <label for="member_tel">전화번호</label>
+                <input type="text" id="member_tel" name="member_tel" required> <br>
+                
+                <label for="weight">체중 (kg)</label>
+                <input type="number" id="weight" name="weight" required> <br>
+                
+                <label for="height">키 (cm)</label>
+                <input type="number" id="height" name="height" required> <br>
+                
+                <label for="reason">운동 목적</label>
+                <textarea id="reason" name="reason" required></textarea> <br>
+                
+                <button type="submit">회원 등록</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $("#register_form").submit(function(){
+            $.ajax({
+                url: "/member/register",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    member_name: $("#member_name").val(),
+                    member_age: $("#member_age").val(),
+                    member_tel: $("#member_tel").val(),
+                    weight: $("#weight").val(),
+                    height: $("#height").val(),
+                    reason: $("#reason").val()
+                }),
+                success: function(data){
+                    alert(data.code + "," + data.message);
+                    if (data.code === "success") {
+                        alert("회원 등록이 완료되었습니다");
+                        window.location.href = "/index.html";
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+</body>
+</html>
