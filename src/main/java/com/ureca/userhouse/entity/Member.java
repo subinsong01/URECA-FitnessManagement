@@ -1,5 +1,7 @@
 package com.ureca.userhouse.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,7 @@ public class Member {
     private String reason;
 
     @ManyToOne
+    @JsonBackReference //순환 참조 문제를 방지하기 위해 삽입 
     @JoinColumn(name = "manager_mid") 
     private Manager manager;
 }
