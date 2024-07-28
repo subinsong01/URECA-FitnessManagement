@@ -1,3 +1,4 @@
+<!-- 회원정보 등록 페이지 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -57,9 +58,9 @@
                 }),
                 success: function(data){
                     alert(data.code + "," + data.message);
-                    if (data.code === "success") {
+                    if (data.code === "success") { 
                         alert("회원 등록이 완료되었습니다");
-                        window.location.href = "/index.html";
+                        window.location.href = "/memberDetail.html";
                     }
                 }
             });

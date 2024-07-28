@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.header .about {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+}
+
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#member_list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#member_list li {
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#member_list li:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-info span {
+    font-size: 16px;
+    color: #333;
+}
+
+.member-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.member-actions a {
+    text-decoration: none;
+    color: #007BFF;
+    font-size: 16px;
+    border: 1px solid #007BFF;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.member-actions a:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.member-actions span {
+    margin: 0 10px;
+    font-size: 16px;
+    color: #333;
+}

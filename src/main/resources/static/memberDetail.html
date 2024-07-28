@@ -1,0 +1,70 @@
+<!-- 등록한 회원 목록 페이지 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>등록한 회원</title>
+    <link rel="stylesheet" href="/css/memberDetail.css">
+</head>
+<body>
+    <div class="header">
+        <div class="title">유저하우스</div>
+        <a href="#" class="about">ABOUT</a>
+    </div>
+    <div class="container">
+        <h2>회원 목록</h2>
+        <a href="/managerPage.html">관리자 페이지</a>
+        <ul id="member_list"></ul>
+    </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        loadMemberList();
+    });
+
+    function loadMemberList() {
+        $.ajax({
+            url: "/member/list",
+            method: "GET",
+            success: function(data) {
+                var memberList = $("#member_list");
+                memberList.empty();
+                data.forEach(function(member) {
+                    memberList.append(
+                        "<li>" +
+                            "<div class='member-info'>" +
+                                "<span>이름: " + member.member_name + "</span>" +
+                                "<span>나이: " + member.member_age + "세</span>" +
+                                "<span>전화번호: " + member.member_tel + "</span>" +
+                                "<span>체중: " + member.weight + "kg</span>" +
+                                "<span>키: " + member.height + "cm</span>" +
+                                "</div>" +
+                                "<button onclick='deleteMember(" + member.id + ")'>삭제</button>" +
+                            "</li>"
+                    );
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("Failed to load member list: " + error);
+            }
+        });
+    }
+    function deleteMember(memberId) {
+        if (confirm("정말로 이 회원을 삭제하시겠습니까?")) {
+            $.ajax({
+                url: "/member/delete/" + memberId,
+                method: "DELETE",
+                success: function(data) {
+                    alert(data.message);
+                    loadMemberList(); // 회원 목록을 다시 로드하여 업데이트합니다.
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to delete member: " + error);
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>
