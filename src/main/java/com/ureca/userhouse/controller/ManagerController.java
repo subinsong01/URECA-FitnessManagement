@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -100,7 +101,7 @@ public class ManagerController {
             result.put("message", "On Login");
             Manager mm = (Manager)object;
             mm.setMpwd(null);
-            result.put("data", mm); // 로그인된 사용자 정보
+            result.put("data", mm);
         }
         System.out.println(result);
         return result;
@@ -120,6 +121,28 @@ public class ManagerController {
             memberRepo.save(member);
             response.put("code", "success");
             response.put("message", "Member registered successfully");
+        }
+        return response;
+    }
+    
+    // 회원 목록 조회 기능
+    @GetMapping("/member/list")
+    @ResponseBody
+    public List<Member> listMembers() {
+        return memberRepo.findAll();
+    }
+    
+    // 회원 삭제 기능
+    @DeleteMapping("/member/delete/{id}")
+    @ResponseBody
+    public Map<String, String> deleteMember(@PathVariable("id") Long id) {
+        Map<String, String> response = new HashMap<>();
+        Optional<Member> member = memberRepo.findById(id);
+        if (member.isPresent()) {
+            memberRepo.deleteById(id);
+            response.put("message", "회원 삭제 완료");
+        } else {
+            response.put("message", "회원이 존재하지 않습니다");
         }
         return response;
     }
