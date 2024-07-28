@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header .title {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.header .about {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.container {
+    background-color: #E5FFEF;
+    border-radius: 30px;
+    padding: 50px;
+    width: 1024px;
+    height: 600px;
+    margin-top: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+}
+
+.left-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-content img {
+    width: 300px;
+    height: 300px;
+}
+
+.right-content {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-content h2 {
+    margin-bottom: 20px;
+}
+
+.right-content label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.right-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.right-content button {
+    background-color: #E5FFEF;
+    border: none;
+    border-radius: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 15px 30px;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.right-content button:hover {
+    background-color: #ddd;
+}
+
+.right-content p {
+    margin-bottom: 10px;
+}
+
+.signup-button {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+    box-shad
