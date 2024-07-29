@@ -20,17 +20,35 @@
                 <button class="profile-edit">프로필 변경</button> <!-- 임의 설정 -->
             </div>
             <nav class="menu">
-                <a href="/reg.html">일정 등록</a>
-                <a href="/mySchedule.html">일정 확인</a>
+                <a href="/reg.html">일정 등록</a> <!-- todo 기능 -->
+                <a href="/mySchedule.html">일정 확인</a> <!-- 캘린더 일정 확인 -->
+                <a href="/login.html" id="logout">로그아웃</a>
             </nav>
         </div>
            <div class="main-content">
             <div class="member-actions">
-                <a href="/member.html">회원 등록</a>
+                <a href="/member.html">회원 등록</a> <!-- 회원 등록 페이지로 -->
                 <span>|</span>
-                <a href="/memberDetail.html">회원 목록</a>
+                <a href="/memberDetail.html">회원 목록</a> <!--  등록한 회원 목록 -->
             </div>   
             </div>
         </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+ // 로그아웃하기
+    $("#logout").click(function(){
+        $.ajax({
+            url: "/member/logout",
+            success: function(data){
+                alert("로그아웃 되었습니다");
+                if (data.code === "success") {
+                    window.location.href = "/login.html";
+                }
+            }
+        });
+        
+        return false;
+    });
+    </script>
 </body>
 </html> 

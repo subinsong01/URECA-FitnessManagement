@@ -39,7 +39,9 @@
     </div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript">
-    $("#signup_form").submit(function(){
+    $("#signup_form").submit(function(event){
+        event.preventDefault();
+
         $.ajax({
             url: "/signup",
             method: "POST",
@@ -51,15 +53,17 @@
                 email: $("#email").val()
             }),
             success: function(data){
-                alert(data.code + "," + data.message);
                 if (data.code === "success") {
                     alert("회원가입을 축하합니다");
-                    window.location.href = "/member.html";
+                    window.location.href = "/login.html";
+                } else {
+                    alert(data.message);
                 }
+            },
+            error: function(xhr, status, error) {
+                alert("회원가입 요청 처리 중 오류가 발생했습니다.");
             }
         });
-        
-        return false;
     });
 </script>
 </body>

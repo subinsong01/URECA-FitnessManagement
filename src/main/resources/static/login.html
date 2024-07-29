@@ -16,9 +16,9 @@
             <img src="/image/logo.png" alt="logo">
         </div>
         <div class="right-content">
-            <form id="login_form" action="/member/login" method="post">
+            <form id="login_form">
                 <h2>로그인</h2>
-                <label for="mid">Email</label>
+                <label for="mid">Id</label>
                 <input type="text" id="mid" name="mid" required> <br>
                 
                 <label for="mpwd">Password</label>
@@ -28,55 +28,38 @@
             </form>
             <p>아직 회원이 아니신가요?</p>
             <a href="/sign.html" class="signup-button">회원가입</a>
-  			<div>
-               <a href="#" id="check_login">로그인여부 확인</a>
-            </div> 
-            <div>
-                <a href="#" id="logout">로그아웃하기</a>
-            </div>
+           <!--   <div>
+               <a href="#" id="check_login">로그인 상태 확인</a>
+            </div> -->
         </div>
     </div>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script type="text/javascript">
-    $("#login_form").submit(function(){
-        $.ajax({
-            url: "/member/login",
-            method: "POST",
-            data: $("#login_form").serialize(),
-            success: function(data){
-                alert(data.code + "," + data.message);
-                if (data.code === "success") {
-                    window.location.href = "/managerPage.html";
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $("#login_form").submit(function(event){
+            event.preventDefault(); 
+            $.ajax({
+                url: "/member/login",
+                method: "POST",
+                data: $("#login_form").serialize(),
+                success: function(data){
+                    alert("로그인 완료");
+                    if (data.code === "success") {
+                        window.location.href = "/managerPage.html";
+                    }
                 }
-            }
+            });
         });
         
-        return false;
-    });
-    
-    // 로그인여부 확인
- $("#check_login").click(function(){
-        $.ajax({
-            url: "/member/check_login",
-            success: function(data){
-                alert(data.code + "," + data.message);
-            }
+        // 로그인여부 확인 -> 굳이 필요한 기능은 아닌 것 같아서 제거함
+        $("#check_login").click(function(){
+            $.ajax({
+                url: "/member/check_login",
+                success: function(data){
+                    alert("로그인 상태 입니다");
+                }
+            });        
+            return false;
         });
-                
-        return false;
-    });
-
-    // 로그아웃하기
-    $("#logout").click(function(){
-        $.ajax({
-            url: "/member/logout",
-            success: function(data){
-                alert(data.code + "," + data.message);
-            }
-        });
-        
-        return false;
-    });
-</script>
+    </script>
 </body>
 </html>

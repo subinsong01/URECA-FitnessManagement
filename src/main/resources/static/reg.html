@@ -3,64 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/reg.css">  
     <title>일정 등록</title>
+    <link rel="stylesheet" href="/css/reg.css">
 </head>
 <body>
-  	<div class="header">
+    <div class="header">
         <div class="title">유저하우스</div>
         <a href="#" class="about">ABOUT</a>
     </div>
     <h2>오늘 일정을 등록하세요</h2>
     <div class="container">
         <div class="input-row">
-            <input id="inputField" type="text" placeholder="할 일을 입력하세요">  
-            <button id="addToDo">+</button>  
+            <input id="inputField" type="text" placeholder="할 일을 입력하세요">
+            <button id="addToDo">+</button>
         </div>
-        <ul class="to-dos" id="toDoList"></ul>  
+        <ul class="to-dos" id="toDoList"></ul>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        let inputBox = document.getElementById('inputField');  
-        let addToDo = document.getElementById('addToDo');    
-        let toDoList = document.getElementById('toDoList');   
-        
-        addToDo.addEventListener('click', function(){    // 버튼에 클릭 이벤트가 발생하면
-            var list = document.createElement('li');    
-            if (!inputBox.value) {          
-                alert('내용을 입력해 주세요');
-            } else {
-                list.innerText = inputBox.value; 
-                let btnContainer = document.createElement('div');
-                btnContainer.className = 'btn-container';
+        $(document).ready(function() {
+            loadTodos();
+            
+            function loadTodos() {
+                $.ajax({
+                    url: '/todo/api/todos',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#toDoList').empty();
+                        data.forEach(todo => createTodoElement(todo));
+                    },
+                });
+                return false;
+            }
 
-                let deleteBtn = document.createElement('button'); //삭제 버튼
-                deleteBtn.innerText = '삭제';
-                deleteBtn.className = 'delete-btn';
-                btnContainer.appendChild(deleteBtn); 
-                
-                let updateBtn = document.createElement('button');  // 수정 버튼 
-                updateBtn.innerText = '수정';
-                updateBtn.className = 'update-btn';
-                btnContainer.appendChild(updateBtn); 
-                
-                list.appendChild(btnContainer); 
-                toDoList.appendChild(list); //입력한 값 띄우기
-                inputBox.value= "";  //초기화 
+            function createTodoElement(todo) {
+                var list = $('<li>').addClass('todo-item');
 
-                deleteBtn.addEventListener('click', function(){ 
+                var contentSpan = $('<span>').addClass('content').text(todo.content);
+                list.append(contentSpan);
+
+                var btnContainer = $('<div>').addClass('btn-container');
+
+                var deleteBtn = $('<button>').addClass('delete-btn').text('삭제');
+                var updateBtn = $('<button>').addClass('update-btn').text('수정');
+                btnContainer.append(deleteBtn).append(updateBtn);
+
+                list.append(btnContainer);
+                $('#toDoList').append(list);
+
+                // 삭제 버튼
+                $(deleteBtn).click(function() {
                     if (confirm('정말 삭제하시겠습니까?')) {
-                        toDoList.removeChild(list);
+                        $.ajax({
+                            url: `/todo/api/todos/${todo.id}`,
+                            method: 'DELETE', 
+                            success: function(data) {
+                                if (data.code === 'ok') {
+                                    list.remove();
+                                } else {
+                                    alert(data.message);
+                                }
+                            },
+                        });
+                        return false;
                     }
                 });
 
-                updateBtn.addEventListener('click', function(){ 
-                    let newValue = prompt('수정할 내용을 입력하세요', list.firstChild.textContent);
-                    if (newValue) {
-                        list.firstChild.textContent = newValue; 
+                // 수정 버튼
+                $(updateBtn).click(function() {
+                    let edit = prompt('수정할 내용을 입력하세요');
+                    if (edit) {
+                        $.ajax({
+                            url: `/todo/api/todos/${todo.id}`,
+                            method: 'PUT',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ content: edit, completed: todo.completed }),
+                            success: function(data) {
+                                if (data.code === 'ok') {
+                                   	alert("정상적으로 변경되었습니다");
+                                }
+                            },  
+                        });
+                       return false;
                     }
                 });
             }
+            //항목 추가
+            $('#addToDo').click(function() {
+                const content = $('#inputField').val();
+                if (!content) {
+                    alert('내용을 입력해 주세요');
+                } else {
+                    $.ajax({
+                        url: '/todo/api/todos',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ content: content, completed: false }),
+                        success: function(data) {
+                            createTodoElement(data);
+                            $('#inputField').val('');
+                        },
+                    })
+                    return false;
+                }
+            });
         });
     </script>
 </body>

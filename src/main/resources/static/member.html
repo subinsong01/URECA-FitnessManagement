@@ -57,7 +57,6 @@
                     reason: $("#reason").val()
                 }),
                 success: function(data){
-                    alert(data.code + "," + data.message);
                     if (data.code === "success") { 
                         alert("회원 등록이 완료되었습니다");
                         window.location.href = "/memberDetail.html";

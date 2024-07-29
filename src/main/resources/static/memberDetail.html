@@ -28,7 +28,7 @@
             url: "/member/list",
             method: "GET",
             success: function(data) {
-                var memberList = $("#member_list");
+                memberList = $("#member_list");
                 memberList.empty();
                 data.forEach(function(member) {
                     memberList.append(
@@ -41,28 +41,24 @@
                                 "<span>키: " + member.height + "cm</span>" +
                                 "</div>" +
                                 "<button onclick='deleteMember(" + member.id + ")'>삭제</button>" +
-                            "</li>"
+                        "</li>"
                     );
                 });
             },
-            error: function(xhr, status, error) {
-                console.error("Failed to load member list: " + error);
-            }
         });
+		return false;
     }
     function deleteMember(memberId) {
-        if (confirm("정말로 이 회원을 삭제하시겠습니까?")) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
             $.ajax({
                 url: "/member/delete/" + memberId,
                 method: "DELETE",
                 success: function(data) {
                     alert(data.message);
-                    loadMemberList(); // 회원 목록을 다시 로드하여 업데이트합니다.
+                    loadMemberList();
                 },
-                error: function(xhr, status, error) {
-                    console.error("Failed to delete member: " + error);
-                }
             });
+            return false;
         }
     }
 </script>
