@@ -1,10 +1,11 @@
 package com.ureca.userhouse.controller;
-
 import com.ureca.userhouse.entity.Manager;
 import com.ureca.userhouse.entity.Member;
 import com.ureca.userhouse.repository.MangerRepository;
 import com.ureca.userhouse.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,22 +24,22 @@ public class ManagerController {
 
     @Autowired
     private MemberRepository memberRepo;
-
+    
     // 회원가입 기능
     @PostMapping("/signup")
     @ResponseBody
-    public Map<String, String> signup(@RequestBody Manager manager) {
+    public ResponseEntity<Map<String, String>> signup(@RequestBody Manager manager) {
         System.out.println("Received signup request for: " + manager.getMid());
         Map<String, String> response = new HashMap<>();
         if (managerRepo.existsById(manager.getMid())) {
             response.put("code", "error");
-            response.put("message", "User already exists");
+            response.put("message", "이미 등록된 회원입니다");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } else {
             managerRepo.save(manager);
             response.put("code", "success");
-            response.put("message", "User registered successfully");
+            return ResponseEntity.ok(response);
         }
-        return response;
     }
 
     // 로그인기능
@@ -57,7 +58,7 @@ public class ManagerController {
             if(mymember.getMpwd().equals(mpwd)) {
                 result.put("code", "success");
                 result.put("message", "로그인완료");
-                session.setAttribute("member", mymember);
+                session.setAttribute("member", mymember); 
             } else {
                 result.put("message", "암호틀림");
             }
@@ -80,33 +81,39 @@ public class ManagerController {
         } else {
             message += "로그인 된 상태.";
         }
-        session.invalidate();
+     // invalidate()는  브라우저만의 정보를 담은 session 공단을 지우고 다시 만든다.
+     // 이로서 session에 저장했던 모든정보를 없애버리니 로그인 안된상태로 바꾸는것이다.
+     		session.invalidate();//로그인정보 삭제
         result.put("code", "success");
         result.put("message", message + "로그아웃완료");
         System.out.println(result);
         return result;
     }
 
-    // 로그인 체크
+    //로그인 확인 기능
     @GetMapping("/member/check_login")
-    @ResponseBody
-    public Map<String, Object> check_login(HttpSession session) {
-        HashMap<String, Object> result = new HashMap<>();
-        Object object = session.getAttribute("member");
-        if(object == null) {
-            result.put("code", "error");
-            result.put("message", "Not Login");
-        } else {
-            result.put("code", "success");
-            result.put("message", "On Login");
-            Manager mm = (Manager)object;
-            mm.setMpwd(null);
-            result.put("data", mm);
-        }
-        System.out.println(result);
-        return result;
-    }
-
+	@ResponseBody
+	public Map<String, Object> check_login( HttpSession session ){
+		HashMap<String, Object> result = new HashMap<>();
+		
+		Object object = session.getAttribute("member");
+		// 브라우저만의 공간인 session에 "member"키로 저장된게 있으면 로그인한것이고
+		// 없으면 로그인 안 한 것이다.
+		if(object==null) {
+			result.put("code", "error");
+			result.put("message", "Not Login");
+		}else {
+			result.put("code", "ok");
+			result.put("message", "On Login");
+			Manager mm = (Manager)object;
+			mm.setMpwd(null);
+			result.put("data", mm); //로그인된 사용자 정보
+		}
+		
+		System.out.println(result);
+		return result;
+	}
+    
     // 회원 등록 기능
     @PostMapping("/member/register")
     @ResponseBody
@@ -115,12 +122,11 @@ public class ManagerController {
         Manager manager = (Manager) session.getAttribute("member");
         if (manager == null) {
             response.put("code", "error");
-            response.put("message", "You need to be logged in to register a member");
+            response.put("message", "회원을 등록해주세요");
         } else {
             member.setManager(manager);
             memberRepo.save(member);
             response.put("code", "success");
-            response.put("message", "Member registered successfully");
         }
         return response;
     }
@@ -146,4 +152,5 @@ public class ManagerController {
         }
         return response;
     }
-}
+ 
+ }
