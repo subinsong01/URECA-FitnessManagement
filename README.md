@@ -23,7 +23,4 @@
 -----
 <img width="750" alt="스크린샷 2024-08-06 오후 2 49 21" src="https://github.com/user-attachments/assets/ca9ab448-66bd-4447-a802-99e4d7ce860e">
 
-### 🔨 ERD DIAGRAM
--------
-<img width="750" alt="스크린샷 2024-08-06 오후 3 03 55" src="https://github.com/user-attachments/assets/6a490e7e-cb6c-4754-8113-95c03769c113">
----------
+
